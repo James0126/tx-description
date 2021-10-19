@@ -3,10 +3,10 @@ import { useMemo } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { NetworkProvider } from "./NetworkProvider";
 import ParseAddress from "./ParseAddress";
-import ParseCoin from "./ParseCoin";
+import Coins from "./Coins";
 import ParseWord from "./ParseWord";
 import { NetworkConfig } from "./types";
-import { REGEXP } from "./utility";
+import { isCoins } from "./utility";
 
 const queryClient = new QueryClient();
 
@@ -30,14 +30,11 @@ const TxDescription = ({
             {ValAddress.validate(word) || AccAddress.validate(word) ? (
               <ParseAddress key={index}>{word}</ParseAddress>
             ) : isCoins(word) ? (
-              <ParseCoin
-                showAllMultipleCoins={showAllMultipleCoins}
-                key={index}
-              >
+              <Coins showAllMultipleCoins={showAllMultipleCoins} key={index}>
                 {word}
-              </ParseCoin>
+              </Coins>
             ) : (
-              <ParseWord bold={index ? false : true} key={index}>
+              <ParseWord bold={!index} key={index}>
                 {word}
               </ParseWord>
             )}
@@ -49,5 +46,3 @@ const TxDescription = ({
 };
 
 export default TxDescription;
-
-const isCoins = (word: string) => word.match(REGEXP.COIN);

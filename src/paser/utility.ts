@@ -10,3 +10,5 @@ export const splitTokenText = (string = "") => {
   const [, amount, token] = string.split(/(\d+)(\w+)/);
   return { amount, token };
 };
+
+export const isCoins = (word: string) => word.match(REGEXP.COIN);
