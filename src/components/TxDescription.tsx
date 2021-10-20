@@ -12,7 +12,7 @@ import Word from "./Word";
 const queryClient = new QueryClient();
 
 interface Props extends ComponentProps {
-  children?: string;
+  children: string;
 }
 
 const TxDescription = ({ children: sentence, network, config }: Props) => {
@@ -30,7 +30,7 @@ const TxDescription = ({ children: sentence, network, config }: Props) => {
   return (
     <PropsProvider value={{ network, config }}>
       <QueryClientProvider client={queryClient}>
-        {sentence?.split(" ").map((word, index) => (
+        {sentence.split(" ").map((word, index) => (
           <Fragment key={index}>
             {!!index && " "}
             {renderWord(word, index)}
