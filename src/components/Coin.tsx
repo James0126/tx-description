@@ -1,25 +1,23 @@
 import { AccAddress } from "@terra-money/terra.js";
-import { readAmount, readDenom, truncate } from "terra-utils";
-import FinderLink from "./FinderLink";
+import { readAmount, readDenom } from "terra-utils";
+import { splitTokenText } from "../helpers/utility";
 import TokenAddress from "./TokenAddress";
-import { splitTokenText } from "./utility";
+import FinderLink from "./FinderLink";
 
 const Coin = ({ children: coin }: { children: string }) => {
   const { amount, token } = splitTokenText(coin);
 
-  const denom = AccAddress.validate(token) ? (
+  const unit = AccAddress.validate(token) ? (
     <FinderLink address={token}>
       <TokenAddress>{token}</TokenAddress>
     </FinderLink>
   ) : (
-    readDenom(token) || truncate(token)
+    readDenom(token)
   );
-
-  const value = readAmount(amount);
 
   return (
     <strong>
-      {value} {denom}
+      {readAmount(amount)} {unit}
     </strong>
   );
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useQuery } from "react-query";
-import { TERRA_ASSETS } from "./constants";
-import { useNetwork } from "./NetworkProvider";
+import { TERRA_ASSETS } from "../helpers/constants";
+import { useNetwork } from "../helpers/NetworkProvider";
 import TokenAddress from "./TokenAddress";
 import FinderLink from "./FinderLink";
 
@@ -12,21 +12,19 @@ interface ContractInfo {
 }
 
 type NetworkName = string;
-type TerraAddress = string;
+type Address = string;
+type Data = Record<NetworkName, Record<Address, ContractInfo>>;
 
-const useContracts = () => {
+const TerraAddress = ({ children: address }: { children: string }) => {
   const { name } = useNetwork();
 
-  return useQuery("contracts", async () => {
-    const { data: assets } = await axios.get<
-      Record<NetworkName, Record<TerraAddress, ContractInfo>>
-    >("/cw20/contracts.json", { baseURL: TERRA_ASSETS });
+  const { data: contracts } = useQuery("contracts", async () => {
+    const { data: assets } = await axios.get<Data>("/cw20/contracts.json", {
+      baseURL: TERRA_ASSETS,
+    });
+
     return assets[name];
   });
-};
-
-const Address = ({ children: address }: { children: string }) => {
-  const { data: contracts } = useContracts();
 
   const getContractName = (address: string) => {
     const contract = contracts?.[address];
@@ -42,4 +40,4 @@ const Address = ({ children: address }: { children: string }) => {
   );
 };
 
-export default Address;
+export default TerraAddress;

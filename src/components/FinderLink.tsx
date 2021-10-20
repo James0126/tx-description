@@ -1,5 +1,5 @@
-import { useNetwork } from "./NetworkProvider";
-import { FINDER } from "./constants";
+import { useNetwork } from "../helpers/NetworkProvider";
+import { FINDER } from "../helpers/constants";
 import { FC } from "react";
 
 interface Props {

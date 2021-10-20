@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TxDescription from "./paser";
+import TxDescription from "./components/TxDescription";
 
 const CONFIG = {
   name: "testnet",
@@ -23,24 +23,21 @@ const samples = [
 ];
 
 const App = () => {
-  const [showAllMultipleCoins, setShowAllMultipleCoins] = useState(false);
+  const [showAllCoins, setShowAllCoins] = useState(false);
   const [input, setInput] = useState("");
   return (
     <div className="App">
       <input value={input} onChange={(e) => setInput(e.target.value)} />
       <input
-        id="showAllMultipleCoins"
+        id="showAllCoins"
         type="checkbox"
-        checked={showAllMultipleCoins}
-        onChange={() => setShowAllMultipleCoins(!showAllMultipleCoins)}
+        checked={showAllCoins}
+        onChange={() => setShowAllCoins(!showAllCoins)}
       />
-      <label htmlFor="showAllMultipleCoins">showAllMultipleCoins</label>
+      <label htmlFor="showAllCoins">showAllCoins</label>
 
       <section>
-        <TxDescription
-          showAllMultipleCoins={showAllMultipleCoins}
-          config={CONFIG}
-        >
+        <TxDescription config={{ showAllCoins }} network={CONFIG}>
           {input}
         </TxDescription>
       </section>

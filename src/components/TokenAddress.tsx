@@ -1,16 +1,14 @@
 import { useQuery } from "react-query";
 import { truncate } from "terra-utils";
-import { useLCDClient } from "./NetworkProvider";
+import { useLCDClient } from "../helpers/NetworkProvider";
 
 const TokenAddress = ({ children: address }: { children: string }) => {
   const lcd = useLCDClient();
-  const { data } = useQuery(["token", address], () =>
+  const { data: token } = useQuery(["token", address], () =>
     lcd.wasm.contractQuery<{ symbol: string }>(address, { token_info: {} })
   );
 
-  const symbol = data?.symbol;
-
-  return <>{symbol ?? truncate(address)}</>;
+  return <>{token?.symbol ?? truncate(address)}</>;
 };
 
 export default TokenAddress;
