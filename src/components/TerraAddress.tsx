@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 import { TERRA_ASSETS } from "../helpers/constants";
-import { useNetwork } from "../helpers/NetworkProvider";
+import { useNetwork, useProps } from "../helpers/NetworkProvider";
 import TokenAddress from "./TokenAddress";
 import FinderLink from "./FinderLink";
 
@@ -17,6 +17,8 @@ type Data = Record<NetworkName, Record<Address, ContractInfo>>;
 
 const TerraAddress = ({ children: address }: { children: string }) => {
   const { name } = useNetwork();
+  const { config } = useProps();
+  const isMyWallet = address === config?.myWallet;
 
   const { data: contracts } = useQuery("contracts", async () => {
     const { data: assets } = await axios.get<Data>("/cw20/contracts.json", {
@@ -35,7 +37,9 @@ const TerraAddress = ({ children: address }: { children: string }) => {
 
   return (
     <FinderLink address={address}>
-      {getContractName(address) ?? <TokenAddress>{address}</TokenAddress>}
+      {isMyWallet
+        ? "My wallet"
+        : getContractName(address) ?? <TokenAddress>{address}</TokenAddress>}
     </FinderLink>
   );
 };
